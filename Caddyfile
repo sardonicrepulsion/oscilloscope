@@ -1,0 +1,39 @@
+:80 {
+    root * /srv
+    header {
+        X-Frame-Options "DENY"
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=(), accelerometer=(), autoplay=(), encrypted-media=(), gyroscope=(), magnetometer=(), midi=(), payment=(), usb=(), sync-xhr=()"
+        X-Permitted-Cross-Domain-Policies "none"
+        # Note: No server-side CSP yet — template uses inline style/script.
+        # CSP will be tightened in task #448 after CSS/JS extraction (#447).
+        # Note: Strict-Transport-Security, Cross-Origin-Opener-Policy, Cross-Origin-Resource-Policy
+        # are emitted by the HOST Caddy proxy layer via dokku caddy:labels:add to avoid header doubling.
+        -Server
+    }
+    handle /health {
+        header Content-Type application/json
+        respond "{\"status\":\"ok\",\"version\":\"0.1.0\"}" 200
+    }
+    handle /healthz {
+        header Content-Type application/json
+        respond "{\"status\":\"ok\",\"version\":\"0.1.0\"}" 200
+    }
+    handle /version {
+        header Content-Type application/json
+        respond `{"app":"oscilloscope","version":"0.1.0","classification":"tool/public/active"}` 200
+    }
+    @static path_regexp static \.((jpg|jpeg|png|gif|svg|ico|css|js|woff2?|ttf|webmanifest))$
+    header @static Cache-Control "public, immutable"
+    handle {
+        header Cache-Control "no-cache, must-revalidate"
+        try_files {path} {path}/ =404
+        file_server
+    }
+    handle_errors {
+        @notfound expression {err.status_code} == 404
+        rewrite @notfound /404.html
+        file_server
+    }
+}

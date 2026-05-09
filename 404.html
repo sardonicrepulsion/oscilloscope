@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>404 — Stránka nenájdená | Web Audio Dual Osciloskop</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0f1a;
+      --surface: #111827;
+      --cyan: #00d4ff;
+      --green: #00ff88;
+      --text: #e0f0ff;
+      --muted: #5a7a9a;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Courier New', Courier, monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 2rem;
+      text-align: center;
+    }
+    .icon {
+      font-size: 4rem;
+      line-height: 1;
+    }
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 36ch;
+    }
+    a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.75rem 2rem;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      color: #0a0f1a;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 0.5rem;
+      transition: opacity 0.2s;
+      font-family: inherit;
+    }
+    a:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+  <div class="icon">📡</div>
+  <h1>Stránka nenájdená</h1>
+  <p>Táto stránka neexistuje alebo bola presunutá.</p>
+  <a href="/">Späť na osciloskop</a>
+</body>
+</html>
