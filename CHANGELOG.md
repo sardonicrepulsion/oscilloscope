@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-05-09
+
+### Changed
+- Extracted inline `<style>` (299 lines) → `css/app.css`
+- Extracted inline `<script>` (739 lines) → `js/app.js` (loaded with `defer`)
+- `index.html` now references external assets via `<link>` and `<script src>`
+- Updated Dockerfile LABEL version, VERSION, version.json, Caddyfile handlers
+
 ## [0.1.0] - 2026-05-09
 
 ### Added
