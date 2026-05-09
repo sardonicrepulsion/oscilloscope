@@ -1,3 +1,30 @@
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      z-index: 9999;
+    }
+
+    .skip-link:focus {
+      position: fixed;
+      left: 12px;
+      top: 12px;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      padding: 10px 16px;
+      background: var(--accent, #8ee66f);
+      color: #071016;
+      font-weight: 800;
+      font-size: 15px;
+      border-radius: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,.4);
+    }
+
     :root {
       --bg: #0b1020;
       --panel: #141b2f;

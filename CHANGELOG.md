@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-05-09
+
+### Added
+- PWA `manifest.webmanifest` with name, short_name, theme_color, display standalone, 2 SVG icons
+- `icons/icon-192.svg` and `icons/icon-512.svg` (oscilloscope waveform placeholders)
+- `<meta name="theme-color" content="#0b1020">` in `<head>`
+- `<link rel="manifest" href="/manifest.webmanifest">` in `<head>`
+- Skip-link `<a class="skip-link" href="#main">` as first focusable element
+- `id="main"` added to `<main>` element
+- `.skip-link` CSS with off-screen hide + focus reveal styles
+- Tests updated: manifest link, theme-color meta, `<main>` element, manifest.webmanifest
+
 ## [0.4.0] - 2026-05-09
 
 ### Added

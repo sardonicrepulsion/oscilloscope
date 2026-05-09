@@ -83,4 +83,30 @@ describe('oscilloscope project structure', () => {
     const content = readFileSync(jsPath, 'utf8');
     expect(content.trim().length).toBeGreaterThan(100);
   });
+
+  it('index.html has manifest link', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    expect(html).toContain('href="/manifest.webmanifest"');
+  });
+
+  it('index.html has theme-color meta', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    expect(html).toContain('name="theme-color"');
+  });
+
+  it('index.html has <main> element', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    expect(html).toMatch(/<main[^>]*>/);
+  });
+
+  it('manifest.webmanifest exists and has required fields', () => {
+    const manifestPath = join(root, 'manifest.webmanifest');
+    expect(existsSync(manifestPath)).toBe(true);
+    const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+    expect(manifest.name).toBeTruthy();
+    expect(manifest.theme_color).toBeTruthy();
+    expect(manifest.display).toBe('standalone');
+    expect(Array.isArray(manifest.icons)).toBe(true);
+    expect(manifest.icons.length).toBeGreaterThan(0);
+  });
 });

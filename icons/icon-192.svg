@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <rect width="192" height="192" rx="32" fill="#0b1020"/>
+  <rect x="8" y="8" width="176" height="176" rx="26" fill="#141b2f" stroke="#8ee66f" stroke-width="2"/>
+  <!-- Oscilloscope grid -->
+  <line x1="96" y1="24" x2="96" y2="168" stroke="rgba(142,230,111,0.3)" stroke-width="1"/>
+  <line x1="24" y1="96" x2="168" y2="96" stroke="rgba(142,230,111,0.3)" stroke-width="1"/>
+  <!-- Sine wave trace A (cyan) -->
+  <path d="M24,96 C40,60 56,32 72,60 C88,88 104,124 120,96 C136,68 152,40 168,68" fill="none" stroke="#41d7ff" stroke-width="3" stroke-linecap="round"/>
+  <!-- Sawtooth trace B (amber) -->
+  <path d="M24,80 L60,120 L60,68 L96,112 L96,60 L132,104 L132,56 L168,100" fill="none" stroke="#ffbe3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
