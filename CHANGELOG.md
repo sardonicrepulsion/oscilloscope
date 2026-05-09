@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-05-09
+
+### Added
+- GitHub Actions CI workflow `.github/workflows/ci.yml` on `sardonic-arm64-oscilloscope` runner
+  - `static-tests`: npm ci + vitest
+  - `version-consistency`: VERSION/version.json/package.json/Caddyfile must match
+  - `docker-build`: Docker image build (push: false)
+  - `smoke`: run container, curl /healthz + /version
+- Self-hosted runner `sardonic-arm64-oscilloscope` registered and started
+
 ## [0.3.1] - 2026-05-09
 
 ### Added
