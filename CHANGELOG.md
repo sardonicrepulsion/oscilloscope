@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-05-09
+
+### Added
+- Content-Security-Policy header in Caddyfile: strict `'self'` for all directives
+- `require-trusted-types-for 'script'` + `trusted-types oscilloscope-template` policy
+- Trusted Types policy `oscilloscope-template` in js/app.js wraps single `.innerHTML` assignment
+- Bumped version to 0.3.0
+
 ## [0.2.0] - 2026-05-09
 
 ### Changed
