@@ -1,3 +1,10 @@
+    // Trusted Types policy for controlled innerHTML assignments
+    const ttPolicy = (typeof window.trustedTypes !== 'undefined' && window.trustedTypes.createPolicy)
+      ? window.trustedTypes.createPolicy('oscilloscope-template', {
+          createHTML: (s) => s
+        })
+      : { createHTML: (s) => s };
+
     const canvas = document.getElementById('scope');
     const g = canvas.getContext('2d');
 
@@ -197,7 +204,7 @@
       const audioState = isDemoRunning() ? 'demo hrá' : wavPlaying ? 'WAV hrá' : audio ? 'pripravené' : 'vypnuté';
       const sourceLabel = isDemoMode() ? 'demo oscilátory' : wavBuffer ? 'WAV/audio buffer' : 'WAV bez súboru';
       const wavLine = wavBuffer ? `<br>WAV: ${formatTime(currentWavPositionSec())} / ${formatTime(wavBuffer.duration)}` : '';
-      ui.status.innerHTML = `Audio: ${audioState}<br>Vzorkovanie: ${sampleRate.toLocaleString('sk-SK')} Hz<br>Zdroj: ${sourceLabel}${wavLine}`;
+      ui.status.innerHTML = ttPolicy.createHTML(`Audio: ${audioState}<br>Vzorkovanie: ${sampleRate.toLocaleString('sk-SK')} Hz<br>Zdroj: ${sourceLabel}${wavLine}`);
     }
 
     function updatePanelState() {
