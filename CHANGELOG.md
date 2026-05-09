@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-05-09
+
+### Added
+- HSTS, COOP, CORP headers via `dokku caddy:labels:add` (host-proxy layer)
+- README "Security Headers" section updated with full header table and re-apply instructions
+
 ## [0.3.0] - 2026-05-09
 
 ### Added

@@ -37,9 +37,18 @@ git clone https://github.com/sardonicrepulsion/oscilloscope.git
 
 ## Security Headers
 
-App-layer headers (X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy) are set in `Caddyfile`.
+**App-layer headers** (set in `Caddyfile`):
 
-Host-proxy-layer headers are set via Dokku caddy labels (to avoid doubling with the inner Caddy instance):
+| Header | Value |
+|--------|-------|
+| `Content-Security-Policy` | `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self' blob:; worker-src 'self' blob:; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types oscilloscope-template` |
+| `X-Frame-Options` | `DENY` |
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | (restrictive) |
+| `X-Permitted-Cross-Domain-Policies` | `none` |
+
+**Host-proxy-layer headers** (set via `dokku caddy:labels:add` to avoid doubling with inner Caddy):
 
 | Label | Value |
 |-------|-------|
@@ -47,7 +56,12 @@ Host-proxy-layer headers are set via Dokku caddy labels (to avoid doubling with 
 | `caddy.header.Cross-Origin-Opener-Policy` | `same-origin` |
 | `caddy.header.Cross-Origin-Resource-Policy` | `same-origin` |
 
-> **Note:** No server-side CSP in v0.1.0 — template uses inline style/script. CSP will be tightened in task #448 after CSS/JS extraction (#447).
+To re-apply after a full redeploy:
+```bash
+dokku caddy:labels:add oscilloscope caddy.header.Strict-Transport-Security '"max-age=63072000; includeSubDomains; preload"'
+dokku caddy:labels:add oscilloscope caddy.header.Cross-Origin-Opener-Policy same-origin
+dokku caddy:labels:add oscilloscope caddy.header.Cross-Origin-Resource-Policy same-origin
+```
 
 ## Environment Variables
 
