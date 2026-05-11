@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-05-09
+
+### Added
+- V2 audit complete — promoted to 1.x production release
+- `docs/how-to-use.md` — user guide + deploy guide + versioning reference
+- `docs/components.md` — markup contract, state classes, CSS hooks for all components
+- `docs/SECURITY.md` — threat model, security controls, reporting policy
+- `docs/ADR-001-external-assets.md` — architecture decisions for CSS/JS extraction + Trusted Types
+- `docs/incidents/` — incidents directory (empty, ready for postmortems)
+- SRcore project #37 rating bumped to 9.4 (V2 sweep #547-#552 complete)
+
 ## [0.5.0] - 2026-05-09
 
 ### Added
