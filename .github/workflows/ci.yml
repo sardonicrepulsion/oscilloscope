@@ -11,7 +11,7 @@ permissions:
 jobs:
   static-tests:
     name: static-tests
-    runs-on: [self-hosted, sardonic-arm64-oscilloscope]
+    runs-on: [self-hosted, Linux, ARM64, org-pool]
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
 
   version-consistency:
     name: version-consistency
-    runs-on: [self-hosted, sardonic-arm64-oscilloscope]
+    runs-on: [self-hosted, Linux, ARM64, org-pool]
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
@@ -56,7 +56,7 @@ jobs:
 
   docker-build:
     name: docker-build
-    runs-on: [self-hosted, sardonic-arm64-oscilloscope]
+    runs-on: [self-hosted, Linux, ARM64, org-pool]
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -73,7 +73,7 @@ jobs:
   smoke:
     name: smoke
     needs: docker-build
-    runs-on: [self-hosted, sardonic-arm64-oscilloscope]
+    runs-on: [self-hosted, Linux, ARM64, org-pool]
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -88,6 +88,10 @@ jobs:
           tags: oscilloscope:smoke-${{ github.sha }}
       - name: Run container
         run: |
+          docker rm -f oscilloscope-smoke-${{ 2>/dev/null || true
+          exec 9>>/tmp/docker-smoke.lock
+          flock -w 600 -x 9
+          trap 'docker rm -f oscilloscope-smoke-${{ 2>/dev/null || true' EXIT
           docker run -d --name oscilloscope-smoke-${{ github.sha }} -p 19080:80 oscilloscope:smoke-${{ github.sha }}
           for i in $(seq 1 15); do
             if curl -fsS http://localhost:19080/healthz > /dev/null 2>&1; then
