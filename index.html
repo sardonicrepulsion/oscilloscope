@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Web Audio Dual Osciloskop + WAV</title>
+  <meta name="theme-color" content="#0b1020">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Preskočiť na hlavný obsah</a>
+  <main class="app" id="main">
+    <section class="topbar">
+      <div>
+        <h1>Dual Web Audio Osciloskop + WAV</h1>
+        <p class="hint">Dve stopy v jednom Canvase. Demo režim kreslí sínus/pílu, WAV režim kreslí ľavý/pravý kanál nahratého audio súboru.</p>
+      </div>
+      <div class="status" id="status">Audio: vypnuté<br>Vzorkovanie: —<br>Zdroj: demo</div>
+    </section>
+
+    <section class="scope-wrap">
+      <canvas id="scope" aria-label="Osciloskop zobrazujúci dva signály"></canvas>
+      <div class="legend">
+        <span class="pill trace-a"><span class="dot"></span><span id="legendA">Sínus</span></span>
+        <span class="pill trace-b"><span class="dot"></span><span id="legendB">Píla</span></span>
+      </div>
+    </section>
+
+    <section class="controls">
+      <div class="buttons">
+        <button class="primary" id="startStop">Spustiť demo</button>
+        <button id="mute">Mute</button>
+        <button class="danger" id="freeze">Freeze obraz</button>
+      </div>
+
+      <div class="control-grid">
+        <div class="group">
+          <h2>Zdroj signálu</h2>
+          <label>
+            Režim
+            <select id="sourceMode">
+              <option value="demo" selected>Demo: sínus + píla</option>
+              <option value="wav">WAV/audio súbor: L + R kanál</option>
+            </select>
+          </label>
+          <p class="hint">V demo režime bežia oscilátory cez Web Audio. Vo WAV režime sa vlna kreslí priamo z dekódovaného <kbd>AudioBuffer</kbd>.</p>
+        </div>
+
+        <div class="group demo-only" id="sineGroup">
+          <h2>Sínusový signál</h2>
+          <label>
+            <span class="row">Frekvencia <output id="sineFreqOut">220 Hz</output></span>
+            <input id="sineFreq" type="range" min="20" max="1200" step="1" value="220">
+          </label>
+          <label>
+            <span class="row">Amplitúda <output id="sineAmpOut">0.45</output></span>
+            <input id="sineAmp" type="range" min="0" max="1" step="0.01" value="0.45">
+          </label>
+        </div>
+
+        <div class="group demo-only" id="sawGroup">
+          <h2>Pílový signál</h2>
+          <label>
+            <span class="row">Frekvencia <output id="sawFreqOut">110 Hz</output></span>
+            <input id="sawFreq" type="range" min="20" max="1200" step="1" value="110">
+          </label>
+          <label>
+            <span class="row">Amplitúda <output id="sawAmpOut">0.35</output></span>
+            <input id="sawAmp" type="range" min="0" max="1" step="0.01" value="0.35">
+          </label>
+        </div>
+
+        <div class="group wav-only" id="wavGroup">
+          <h2>WAV/audio súbor</h2>
+          <label>
+            Nahrať súbor
+            <input id="wavFile" type="file" accept="audio/wav,audio/x-wav,audio/*">
+          </label>
+          <div class="small-info" id="wavInfo">Zatiaľ nie je nahratý žiadny súbor.</div>
+          <label class="check-row">
+            <input id="followPlayback" type="checkbox" checked>
+            Sleduj pozíciu prehrávania
+          </label>
+          <label class="check-row">
+            <input id="loopWav" type="checkbox">
+            Loop prehrávanie
+          </label>
+        </div>
+      </div>
+
+      <div class="control-grid">
+        <div class="group wav-only" id="wavPosGroup">
+          <h2>WAV pozícia</h2>
+          <label>
+            <span class="row">Pozícia <output id="wavPosOut">—</output></span>
+            <input id="wavPos" type="range" min="0" max="1" step="1" value="0">
+          </label>
+          <p class="hint">Slider posúva zobrazované okno. Pri zapnutom sledovaní prehrávania sa posúva automaticky spolu s audiom.</p>
+        </div>
+
+        <div class="group">
+          <h2>Zobrazenie</h2>
+          <label>
+            <span class="row">Zoom / časová základňa <output id="zoomOut">35 ms</output></span>
+            <input id="zoomMs" type="range" min="2" max="250" step="1" value="35">
+          </label>
+          <label>
+            <span class="row">Vertikálne zosilnenie <output id="vScaleOut">1.00×</output></span>
+            <input id="vScale" type="range" min="0.2" max="5" step="0.01" value="1">
+          </label>
+          <label>
+            <span class="row">Stabilizácia obrazu <output id="smoothOut">0.78</output></span>
+            <input id="smooth" type="range" min="0" max="0.96" step="0.01" value="0.78">
+          </label>
+        </div>
+
+        <div class="group">
+          <h2>Sync / trigger</h2>
+          <label>
+            Režim synchronizácie
+            <select id="syncMode">
+              <option value="common" selected>Spoločný trigger pre obe stopy</option>
+              <option value="perTrace">Každá stopa vlastný trigger</option>
+              <option value="free">Bez triggera</option>
+            </select>
+          </label>
+          <label>
+            Trigger stopa
+            <select id="triggerSource">
+              <option value="a" selected>Sínus / L</option>
+              <option value="b">Píla / R</option>
+            </select>
+          </label>
+          <label>
+            <span class="row">Trigger level <output id="triggerOut">0.00</output></span>
+            <input id="triggerLevel" type="range" min="-0.9" max="0.9" step="0.01" value="0">
+          </label>
+        </div>
+
+        <div class="group">
+          <h2>Audio výstup</h2>
+          <label>
+            <span class="row">Master volume <output id="masterOut">0.08</output></span>
+            <input id="masterVol" type="range" min="0" max="0.5" step="0.01" value="0.08">
+          </label>
+          <label>
+            <span class="row">FPS limit <output id="fpsOut">30 fps</output></span>
+            <input id="fps" type="range" min="5" max="60" step="1" value="30">
+          </label>
+          <p class="hint">Kláves <kbd>Space</kbd> spustí/zastaví aktívny režim. Pre WAV funguje prehratie, pauza aj ručný posun.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/app.js" defer></script>
+</body>
+</html>
