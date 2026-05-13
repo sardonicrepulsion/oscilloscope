@@ -88,9 +88,9 @@ jobs:
           tags: oscilloscope:smoke-${{ github.sha }}
       - name: Run container
         run: |
-          docker run -d --name oscilloscope-smoke-${{ github.sha }} -p 19080:80 oscilloscope:smoke-${{ github.sha }}
+          docker run -d --name oscilloscope-smoke-${{ github.sha }} -p 18130:80 oscilloscope:smoke-${{ github.sha }}
           for i in $(seq 1 15); do
-            if curl -fsS http://localhost:19080/healthz > /dev/null 2>&1; then
+            if curl -fsS http://localhost:18130/healthz > /dev/null 2>&1; then
               echo "ready after ${i}s"; break
             fi
             sleep 1
@@ -98,8 +98,8 @@ jobs:
       - name: Smoke /healthz + /version
         run: |
           set -e
-          curl -fsS http://localhost:19080/healthz | grep -q '"status":"ok"'
-          curl -fsS http://localhost:19080/version | grep -q '"app":"oscilloscope"'
+          curl -fsS http://localhost:18130/healthz | grep -q '"status":"ok"'
+          curl -fsS http://localhost:18130/version | grep -q '"app":"oscilloscope"'
           echo "smoke OK"
       - name: Cleanup
         if: always()
