@@ -11,7 +11,7 @@ permissions:
 jobs:
   static-tests:
     name: static-tests
-    runs-on: [self-hosted, sardonic-arm64-oscilloscope]
+    runs-on: [self-hosted, Linux, ARM64, org-pool]
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
 
   version-consistency:
     name: version-consistency
-    runs-on: [self-hosted, sardonic-arm64-oscilloscope]
+    runs-on: [self-hosted, Linux, ARM64, org-pool]
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
@@ -56,7 +56,7 @@ jobs:
 
   docker-build:
     name: docker-build
-    runs-on: [self-hosted, sardonic-arm64-oscilloscope]
+    runs-on: [self-hosted, Linux, ARM64, org-pool]
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -73,7 +73,7 @@ jobs:
   smoke:
     name: smoke
     needs: docker-build
-    runs-on: [self-hosted, sardonic-arm64-oscilloscope]
+    runs-on: [self-hosted, Linux, ARM64, org-pool]
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
