@@ -48,6 +48,62 @@ jobs:
           fi
           echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
           "$CHROME" --version || true
+      - name: Static-smoke (srcore#958 — pageerror gate)
+        env:
+          SMOKE_URL: 'http://127.0.0.1:19220/'
+        run: |
+          # srcore#958 — runtime smoke. Inlined (not via cross-repo composite
+          # in sardonicrepulsion/devops) because GHA can't resolve composite
+          # actions from a private repo — same constraint as srcore#872 took
+          # for the Chromium resolver. Source-of-truth lives at
+          # sardonicrepulsion/devops/.github/actions/static-smoke/action.yml.
+          DEPS="$RUNNER_TEMP/static-smoke-deps"
+          rm -rf "$DEPS"
+          mkdir -p "$DEPS"
+          echo '{"name":"static-smoke","private":true,"type":"module"}' > "$DEPS/package.json"
+          npm install --no-audit --no-fund --prefix "$DEPS" playwright-core 2>&1 | tail -2
+          cat > "$DEPS/smoke.mjs" <<'NODE'
+          const { chromium, devices } = await import('playwright-core');
+          const url = process.env.SMOKE_URL;
+          const errors = [];
+          const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH });
+          const viewports = [
+            { name: 'iPhone 13', ctx: devices['iPhone 13'] },
+            { name: 'desktop',   ctx: { viewport: { width: 1280, height: 720 } } },
+          ];
+          for (const v of viewports) {
+            const ctx = await browser.newContext({ ...v.ctx });
+            const page = await ctx.newPage();
+            page.on('pageerror', (e) => errors.push(`[${v.name}] pageerror: ${e.message}`));
+            page.on('requestfailed', (r) => {
+              const f = r.failure();
+              if (f && !/net::ERR_ABORTED/.test(f.errorText)) {
+                errors.push(`[${v.name}] requestfailed: ${r.url()} — ${f.errorText}`);
+              }
+            });
+            page.on('response', (r) => {
+              if (r.status() === 404 && new URL(r.url()).pathname !== '/favicon.ico') {
+                errors.push(`[${v.name}] 404: ${r.url()}`);
+              }
+            });
+            try {
+              await page.goto(url, { waitUntil: 'networkidle', timeout: 25000 });
+              await page.waitForTimeout(500);
+            } catch (e) {
+              errors.push(`[${v.name}] goto failed: ${e.message}`);
+            }
+            await ctx.close();
+          }
+          await browser.close();
+          if (errors.length) {
+            console.error('\n=== static-smoke caught runtime errors ===');
+            for (const e of errors) console.error('  ' + e);
+            process.exit(1);
+          } else {
+            console.log('static-smoke: 0 runtime errors across iPhone 13 + desktop.');
+          }
+          NODE
+          node "$DEPS/smoke.mjs"
       - name: Run Lighthouse CI
         run: npx --yes @lhci/cli@0.14.x autorun
       - name: Upload Lighthouse report
