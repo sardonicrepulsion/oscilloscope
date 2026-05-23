@@ -25,7 +25,7 @@
 	}
 	handle /version {
 		header Content-Type application/json
-		respond `{"app":"oscilloscope","version":"1.0.7","classification":"tool/public/active"}` 200
+		respond `{"app":"oscilloscope","version":"1.0.8","classification":"tool/public/active"}` 200
 	}
 	@static path_regexp static \.((jpg|jpeg|png|gif|svg|ico|css|js|woff2?|ttf|webmanifest))$
 	header @static Cache-Control "public, immutable"

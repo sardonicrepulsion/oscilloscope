@@ -1,5 +1,12 @@
 # Changelog
 
+
+## [1.0.8] - 2026-05-23 — `chore(srcore#956)` — Add `node --check` parse guard for shipped JS
+
+### Added
+
+- `tests/parse-guard-static.test.mjs` — runs `node --check` against every shipped JS entry. Brew #953 root cause was a parser-time SyntaxError that silently dead-paged the site; this gate catches that class of bug fleet-wide.
+
 ## [1.0.7] - 2026-05-21 — `chore(srcore#870)` — Calibrate LHCI score floors
 
 ### Changed
