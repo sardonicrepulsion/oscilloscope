@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.0.9] - 2026-05-28 — `feat(srcore#1104)` — Hero auto-changelog block
+
+### Added
+
+- `js/changelog-block.js`: parses the top three `## [X.Y.Z] - DATE — TITLE` entries from `/CHANGELOG.md` at page load and renders them into a new `<section class="recent-updates">` block placed between the topbar and the scope canvas. Uses an `oscilloscope-changelog` Trusted Types policy for the single `innerHTML` write and reuses the existing `connect-src 'self'` CSP — no new external host needed. Refreshes whenever the site is redeployed (CHANGELOG is the single source of truth).
+- `css/app.css`: `.recent-updates` block styles (tabular-nums version/date columns, mobile single-column reflow).
+- `index.html`: new section + deferred script tag.
+
 ## [1.0.8] - 2026-05-23 — `chore(srcore#956)` — Add `node --check` parse guard for shipped JS
 
 ### Added
