@@ -5,6 +5,9 @@
 // `oscilloscope-template` Trusted Types policy already declared in the
 // page CSP for the one innerHTML write.
 (function () {
+  // Distinct policy name — added to the Caddyfile `trusted-types`
+  // whitelist alongside `oscilloscope-template` so this script's single
+  // innerHTML write is allowed under the page CSP.
   const ttPolicy =
     typeof window.trustedTypes !== 'undefined' && window.trustedTypes.createPolicy
       ? window.trustedTypes.createPolicy('oscilloscope-changelog', { createHTML: (s) => s })
