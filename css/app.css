@@ -323,3 +323,60 @@
       padding: 1px 5px;
       font-size: 12px;
     }
+
+/* SRcore #1104 — Recent updates block (auto-changelog under hero) */
+.recent-updates {
+  margin: 12px 0 4px;
+  padding: 14px 16px;
+  background: var(--panel-2);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px;
+}
+.recent-heading {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.recent-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.recent-item {
+  display: grid;
+  grid-template-columns: 64px 92px 1fr;
+  gap: 10px;
+  align-items: baseline;
+  font-size: 13px;
+  color: var(--text);
+}
+.recent-version {
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  font-weight: 700;
+}
+.recent-date {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.recent-title { word-break: break-word; }
+.recent-loading,
+.recent-empty {
+  color: var(--muted);
+  font-style: italic;
+  font-size: 13px;
+}
+@media (max-width: 560px) {
+  .recent-item {
+    grid-template-columns: 1fr;
+    gap: 2px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed rgba(255,255,255,.06);
+  }
+  .recent-item:last-child { border-bottom: 0; }
+}

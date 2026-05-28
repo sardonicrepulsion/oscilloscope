@@ -19,6 +19,13 @@
       <div class="status" id="status">Audio: vypnuté<br>Vzorkovanie: —<br>Zdroj: demo</div>
     </section>
 
+    <section class="recent-updates" aria-labelledby="recent-updates-h">
+      <h2 id="recent-updates-h" class="recent-heading">Posledné zmeny</h2>
+      <ol id="recent-updates-list" class="recent-list" aria-live="polite">
+        <li class="recent-loading">…</li>
+      </ol>
+    </section>
+
     <section class="scope-wrap">
       <canvas id="scope" aria-label="Osciloskop zobrazujúci dva signály"></canvas>
       <div class="legend">
@@ -155,5 +162,6 @@
   </main>
 
   <script src="/js/app.js" defer></script>
+  <script src="/js/changelog-block.js" defer></script>
 </body>
 </html>
