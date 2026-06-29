@@ -1,6 +1,11 @@
 # Changelog
 
 
+## [1.0.10] - 2026-06-29 — `chore(deps)(srcore#1206)` — Security dependency refresh
+
+### Changed
+- `vitest` 4.1.5 -> 4.1.9
+
 ## [1.0.9] - 2026-05-28 — `feat(srcore#1104)` — Hero auto-changelog block
 
 ### Added
