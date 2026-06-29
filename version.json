@@ -1,1 +1,5 @@
-{"app":"oscilloscope","version": "1.0.9","classification":"tool/public/active"}
+{
+  "app": "oscilloscope",
+  "version": "1.0.10",
+  "classification": "tool/public/active"
+}
